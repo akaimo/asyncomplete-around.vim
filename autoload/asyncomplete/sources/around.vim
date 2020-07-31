@@ -17,8 +17,14 @@ function! asyncomplete#sources#around#completor(opt, ctx) abort
   call s:log('buffer', l:buf)
   let l:words = s:parsebuffer(l:buf)
   call s:log('words', l:words)
-"   let l:matches = [{"word":"test_text","dup":1,"icase":1,"menu": "[around]"}]
-"   call asyncomplete#complete(a:opt['name'], a:ctx, a:ctx['col'], l:matches)
+
+  let l:kw = matchstr(l:typed, '\w\+$')
+  let l:kwlen = len(l:kw)
+
+  let l:matches = map(l:words, '{"word":v:val,"dup":1,"icase":1,"menu": "[around]"}')
+  let l:startcol = l:col - l:kwlen
+
+  call asyncomplete#complete(a:opt['name'], a:ctx, l:startcol, l:matches)
 endfunction
 
 function! s:getlines(bufnr, lnum) abort
