@@ -17,6 +17,7 @@ function! asyncomplete#sources#around#completor(opt, ctx) abort
   call s:log('buffer', l:buf)
   let l:words = s:parsebuffer(l:buf)
   call s:log('words', l:words)
+  let l:words = s:removeduplicates(l:words)
 
   let l:kw = matchstr(l:typed, '\w\+$')
   let l:kwlen = len(l:kw)
@@ -38,6 +39,10 @@ function! s:parsebuffer(buf) abort
   let l:text = join(a:buf)
   let l:words = split(l:text, '\W\+')
   return l:words
+endfunction
+
+function! s:removeduplicates(list) abort
+  return filter(copy(a:list), 'index(a:list, v:val, v:key+1)==-1')
 endfunction
 
 function! s:log(...) abort
