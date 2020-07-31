@@ -11,13 +11,8 @@ function! asyncomplete#sources#around#completor(opt, ctx) abort
   let l:col = a:ctx['col']
   let l:typed = a:ctx['typed']
 
-  call s:log('ctx', a:ctx)
-  let l:lnum = a:ctx['lnum']
-  let l:buf = s:getlines(a:ctx['bufnr'], l:lnum)
-  call s:log('buffer', l:buf)
-  let l:words = s:parsebuffer(l:buf)
-  call s:log('words', l:words)
-  let l:words = s:removeduplicates(l:words)
+  let l:buf = s:getlines(a:ctx['bufnr'], a:ctx['lnum'])
+  let l:words = s:removeduplicates(s:parsebuffer(l:buf))
 
   let l:kw = matchstr(l:typed, '\w\+$')
   let l:kwlen = len(l:kw)
