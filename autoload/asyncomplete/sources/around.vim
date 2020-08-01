@@ -37,7 +37,3 @@ function! s:removeduplicates(list) abort
   return filter(copy(a:list), 'index(a:list, v:val, v:key+1)==-1')
 endfunction
 
-function! s:log(...) abort
-  call writefile([json_encode(a:000)], '/tmp/vim-around.log', 'a')
-endfunction
-
