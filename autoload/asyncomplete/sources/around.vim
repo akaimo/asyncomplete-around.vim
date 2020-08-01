@@ -1,6 +1,3 @@
-let g:asyncomplete_around_line = 10
-
-
 function! asyncomplete#sources#around#get_source_options(opts) abort
   return extend({
         \ 'refresh_pattern': '\k\+$',
@@ -24,8 +21,8 @@ function! asyncomplete#sources#around#completor(opt, ctx) abort
 endfunction
 
 function! s:getlines(bufnr, lnum) abort
-  let l:first = max([1, a:lnum - g:asyncomplete_around_line])
-  let l:end = a:lnum + g:asyncomplete_around_line
+  let l:first = max([1, a:lnum - g:asyncomplete_around_range])
+  let l:end = a:lnum + g:asyncomplete_around_range
   let l:buf = getbufline(a:bufnr, l:first, l:end)
   return l:buf
 endfunction
