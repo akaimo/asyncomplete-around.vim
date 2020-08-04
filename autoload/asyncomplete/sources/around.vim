@@ -8,14 +8,19 @@ function! asyncomplete#sources#around#completor(opt, ctx) abort
   let l:col = a:ctx['col']
   let l:typed = a:ctx['typed']
 
-  let l:buf = s:getlines(a:ctx['bufnr'], a:ctx['lnum'])
-  let l:words = s:removeduplicates(s:parsebuffer(l:buf))
-
   let l:kw = matchstr(l:typed, '\w\+$')
   let l:kwlen = len(l:kw)
 
-  let l:matches = map(l:words, '{"word":v:val,"dup":1,"icase":1,"menu": "[around]"}')
   let l:startcol = l:col - l:kwlen
+
+  if l:kwlen == 0
+    return
+  endif
+
+  let l:buf = s:getlines(a:ctx['bufnr'], a:ctx['lnum'])
+  let l:words = s:removeduplicates(s:parsebuffer(l:buf))
+
+  let l:matches = map(l:words, '{"word":v:val,"dup":1,"icase":1,"menu": "[around]"}')
 
   call asyncomplete#complete(a:opt['name'], a:ctx, l:startcol, l:matches)
 endfunction
