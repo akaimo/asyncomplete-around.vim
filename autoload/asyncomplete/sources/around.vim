@@ -1,3 +1,5 @@
+let g:complete_min_size = 3
+
 function! asyncomplete#sources#around#get_source_options(opts) abort
   return extend({
         \ 'refresh_pattern': '\k\+$',
@@ -19,6 +21,7 @@ function! asyncomplete#sources#around#completor(opt, ctx) abort
 
   let l:buf = s:getlines(a:ctx['bufnr'], a:ctx['lnum'])
   let l:words = s:removeduplicates(s:parsebuffer(l:buf))
+  let l:words = s:remove_small_words(l:words, g:complete_min_size)
 
   let l:matches = map(l:words, '{"word":v:val,"dup":1,"icase":1,"menu": "[around]"}')
 
@@ -40,5 +43,9 @@ endfunction
 
 function! s:removeduplicates(list) abort
   return filter(copy(a:list), 'index(a:list, v:val, v:key+1)==-1')
+endfunction
+
+function! s:remove_small_words(words, size) abort
+  return filter(copy(a:words), { index, val -> strlen(val) >= a:size })
 endfunction
 
