@@ -8,7 +8,7 @@ function! asyncomplete#sources#around#completor(opt, ctx) abort
   let l:col = a:ctx['col']
   let l:typed = a:ctx['typed']
 
-  let l:kw = matchstr(l:typed, '\w\+$')
+  let l:kw = matchstr(l:typed, '[[:alnum:]_-]\+$')
   let l:kwlen = len(l:kw)
 
   let l:startcol = l:col - l:kwlen
@@ -34,7 +34,7 @@ endfunction
 
 function! s:parsebuffer(buf) abort
   let l:text = join(a:buf)
-  let l:words = split(l:text, '\W\+')
+  let l:words = split(l:text, '[^[:alnum:]_-]\+')
   return l:words
 endfunction
 
